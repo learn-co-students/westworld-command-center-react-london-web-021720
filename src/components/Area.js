@@ -1,25 +1,26 @@
 import React from 'react';
 import '../stylesheets/Area.css'
+import HostList from './HostList'
+import {connect} from 'react-redux'
+const Area = ({area, hosts, selectedHost}) => (
 
-const Area = () => (
+  <div className='area' id={area.name}>
+    <h3 className='labels'>{area.name}</h3>
 
-  <div className='area' id={/* Pass in the area name here to make sure this is styled correctly */}>
-    <h3 className='labels'>{/* Don't just pass in the name from the data...clean that thing up */}</h3>
+<HostList selectedHost={selectedHost.area === area.name && selectedHost.active? selectedHost: null} 
 
-    {/* See Checkpoint 1 item 2 in the Readme for a clue as to what goes here */}
+hosts={ hosts.filter(host => host.active && host.id != selectedHost.id === true) } area={area}/>
 
   </div>
 
 )
 
-Area.propTypes = {
-  hosts: function(props, propName, componentName){
-    if(props.hosts.length > props.limit){
-      throw Error(
-        `HEY!! You got too many hosts in ${props.name}. The limit for that area is ${props.limit}. You gotta fix that!`
-      )
-    }
+
+const mapStateToProps = state => {
+  return {
+    selectedHost: state.selectedHost
+
   }
 }
 
-export default Area;
+export default connect(mapStateToProps) (Area);
